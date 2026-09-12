@@ -19,17 +19,20 @@ Resume text :
 """
 
 try :
-    response = ollama.chat(model=my_doc.llm_model,messages=[
+    stream = ollama.chat(model=my_doc.llm_model,messages=[
         {
             'role' : 'user' ,
             'content' : ai_prompt
         }
-    ])
+    ],stream=True)
 
     print("\n" + "="*50)
     print("AI Analysis Complete :")
     print("="*50)
-    print(response['message']['content'])
+    for chunk in stream:
+        print(chunk['message']['content'], end='', flush=True)
+
+    print("\n")
 
 except Exception as e :
     print(f"\n Ai Connection Error : {e}")
